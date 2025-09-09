@@ -1,113 +1,78 @@
-# Amazon-Reviews-Analysis
+# Amazon Reviews Analysis using Big Data Techniques
 
-Amazon Reviews Analysis using Big Data Techniques
+This project analyzes millions of Amazon product reviews from 1998 to 2024 using **Big Data** tools to uncover trends, seasonal behaviors, and potential spam patterns. We use **PySpark** for scalable data processing, **MinHash LSH** for text similarity, and extensive **Exploratory Data Analysis (EDA)** for market and behavioral insights.
 
-📑 Executive Summary
+---
 
-This project analyzes millions of Amazon product reviews (1998–2024) using Big Data tools, uncovering trends, seasonal behaviors, and potential spam patterns. It leverages PySpark for scalable data processing, MinHash LSH for text similarity, and deep EDA for market and behavior insights.
+### **Key Highlights**
 
-✅ Key Highlights
-Processed ~65 million reviews using PySpark and Parquet datasets.\
-Identified seasonal spikes, pricing dynamics, and spam behaviors.\
-Applied MinHash LSH on Beauty reviews to detect duplicate content.\
-Revealed loose correlation between price and review quality/volume.\
-Found higher text duplication in older reviews vs recent, likely due to AI-generated diversity.
+* Processed approximately **65 million reviews** using PySpark and Parquet datasets.
+* Identified significant seasonal spikes, pricing dynamics, and potential spam behavior.
+* Applied **MinHash LSH** on product reviews to detect duplicate text.
+* Discovered a weak correlation between a product's price and its review quality/volume.
+* Found a higher text duplication rate in older reviews compared to more recent ones, suggesting that AI-generated content may be leading to more unique review text.
 
-📊 Data & Methodology
+---
 
-📁 Datasets:
-Dataset	Description ->	Size
-reviews_parquet	Ratings, review text, timestamps, helpful votes ->	64.6M records\
-meta_parquet	Product metadata (title, category, price, image) -> 4.3M records
+### **Data and Methodology**
 
-⚙️ Technologies Used:
+#### **Datasets**
 
-PySpark for distributed processing\
-Pandas and Matplotlib for local EDA\
-MinHash LSH for similarity detection\
-Jupyter Notebooks for analysis & reporting
+| Dataset | Description | Size |
+| :--- | :--- | :--- |
+| `reviews_parquet` | Ratings, review text, timestamps, helpful votes | ~64.6M records |
+| `meta_parquet` | Product metadata (title, category, price, image) | ~4.3M records |
 
-🧹 Data Cleaning & Preprocessing
+#### **Technologies Used**
 
-Dropped nulls, irrelevant fields, and non-English/empty reviews\
-Flattened nested structures, normalized timestamps\
-Reduced df_reviews from 64,679,785 → 64,556,967 rows\
-Filled missing values in key fields like price, main_category, store (rather than dropping)
+* **PySpark:** For distributed data processing.
+* **Pandas & Matplotlib:** For local data analysis and visualization.
+* **MinHash LSH:** For scalable text similarity detection.
+* **Jupyter Notebooks:** For analysis and reporting.
 
-📈 Timeline Trends & Review Spikes
+---
 
-🔍 Review Activity Over Time\
-Pre-2011: Sparse review volume\
-2012–2017: Steady growth, platform adoption\
-2019–2021: Major spike → COVID, e-commerce boom\
-2023–2024: Drop-off likely due to ingestion delays
+### **Key Findings**
 
-🎯 Key Observations\
-Extreme spikes (~40K reviews/day in 2020) suggest bots or promotions\
-Seasonal surges: July (Prime Day) and December (Holiday season)\
-Recommendation: Use rolling averages to smooth spikes without ignoring real events
+#### **Review Activity Over Time**
 
-🔝 Top Products by Review Count\
-Products like B073R68TSH and B07HRN9J19 had >200 reviews/day\
-Peaks cluster in 2020–2021, reflecting lockdown-driven buying\
-B001MAOQY2 shows long-term stability → mature product lifecycle
+The analysis of review activity reveals clear trends:
+* A major spike in review volume occurred between **2019 and 2021**, likely driven by the e-commerce boom during the COVID-19 pandemic.
+* Extreme daily spikes (up to 40,000 reviews/day) suggest bot activity or large-scale promotions.
+* **Seasonal surges** are evident in **July** (Prime Day) and **December** (Holiday season).
 
-📦 Category-Level Insights
+#### **Category-Level Insights**
 
-🎁 Seasonal Trends\
-Category	-> Peak Time	Notes\
-All Beauty, Fashion, Electronics	-> December Holiday gift surge\
-Amazon Products, Tech	-> July	Prime Day impact\
-Books, Handmade	-> Stable	No strong seasonality
+* **Seasonal Trends:** Categories like **Beauty**, **Fashion**, and **Electronics** peak in December, while **Amazon Products** and **Tech** see surges in July.
+* **Ratings vs. Volume:** Products with the highest ratings (4.9+) are not always the most reviewed. Popular products with a higher review volume tend to have slightly lower average ratings, as a larger sample size captures more variability in customer satisfaction.
+* **Price vs. Rating & Volume:** We found a weak correlation between a product's price and its average rating or review volume. Low-priced items tend to dominate review counts, suggesting that affordability and utility are key drivers for customer engagement.
 
-⭐ Ratings vs. Volume\
-Highly-rated products (4.9+) ≠ most reviewed\
-Popular products tend to get moderately lower ratings\
-Volume ≠ Satisfaction → Larger sample sizes reveal more variability
+#### **Reviewer Behavior**
 
-💵 Price vs. Rating & Volume\
-Weak correlation between price and:\
-Rating\
-Number of reviews\
-Low-priced items dominate review counts\
-Suggests that affordability + utility > premium perception
+The data shows a small number of top reviewers posting across hundreds of products. This raises concerns about spam farms or incentivized reviewers, which could impact the integrity of the review ecosystem.
 
-🧑‍💻 Reviewer Behavior\
-Top reviewers post across hundreds of ASINs\
-Specialized accounts in niches (e.g., Beauty, Electronics)\
-Raises concerns about spam farms or incentivized reviewers\
-🔍 Suggestion: Add reviewer diversity as a feature for spam detection
+#### **Text Similarity Detection with LSH**
 
-🧪 Text Similarity Detection with LSH\
-Focus Category: Beauty\
-Sample: 10K reviews\
-Used MinHash LSH to detect duplicate titles & texts\
-Metric	Value\
-Title Duplication Rate	27.46%\
-Text Duplication Rate	3.36%
+Using MinHash LSH on a sample of 10,000 **Beauty** reviews, we found:
+* **Title Duplication Rate:** 27.46%
+* **Text Duplication Rate:** 3.36%
 
-🧠 Clear copy-paste behavior suggests automation or coordinated manipulation
+This indicates that some level of copy-paste behavior is present. Furthermore, we observed that review duplication has decreased over time:
 
-🆕 Review Uniqueness Over Time
+| Time Period | Duplication Rate |
+| :--- | :--- |
+| **Pre-2022** | 7.39% |
+| **2022–2023** | 2.93% |
 
-Time Period	Duplication Rate\
-Pre-2022	7.39%\
-2022–2023	2.93%\
-✨ Possible Explanations\
-AI-generated reviews are more diverse\
-Increased efforts to evade detection\
-Use of paraphrasing tools
+This drop-off could be due to a rise in AI-generated reviews, which tend to be more unique, or increased efforts by platforms and users to evade detection.
 
-📌 Conclusions & Recommendations
+---
 
-🔍 Patterns Identified\
-Clear seasonal surges (July, December)\
-Bot-like spikes during product launches/promotions\
-Volume ≠ Satisfaction in ratings\
-Review duplication still present and detectable
+### **Conclusions and Recommendations**
 
-✅ Recommendations\
-Use LSH-based duplication scores in spam filters\
-Leverage seasonality for marketing/inventory planning\
-Monitor reviewer patterns for fraud signals\
-Moderate products with explosive growth
+Based on our analysis, we recommend the following:
+
+* **Spam Detection:** Integrate LSH-based duplication scores into spam filtering systems.
+* **Marketing Strategy:** Leverage seasonality and key shopping events for targeted marketing and inventory planning.
+* **Fraud Monitoring:** Monitor reviewer patterns, especially those with high review counts across many different products, for potential fraud signals.
+* **Explosive Growth:** Moderate products with unusually explosive review growth to investigate potential bot or manipulation activity.
